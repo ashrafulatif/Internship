@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Typography } from "@mui/material";
 import ProductList from "@/components/ProductList";
 import productsData from "@/Data/productData.json";
 
-const SearchPage = () => {
+const SearchResults = () => {
   const query = useSearchParams().get("query")?.toLowerCase() || "";
 
   const filteredProducts = productsData.products.filter((product) =>
@@ -26,6 +26,14 @@ const SearchPage = () => {
         </Typography>
       )}
     </Container>
+  );
+};
+
+const SearchPage = () => {
+  return (
+    <Suspense fallback={<p>Loading search results...</p>}>
+      <SearchResults />
+    </Suspense>
   );
 };
 
