@@ -1,0 +1,14 @@
+{
+  "carouselImages": [
+    {
+      "id": 1,
+      "imageUrl": "/Carousel1.jpg",
+      "title": "First carousel image"
+    },
+    {
+      "id": 2,
+      "imageUrl": "/Carousel2.jpg",
+      "title": "Second carousel image"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Wireless Bluetooth Headphones",
+      "description": "Noise-canceling over-ear headphones with deep bass.",
+      "price": 59.99,
+      "category": "Electronics",
+      "stock": 25,
+      "imageUrl": "/ProductImage/headphones.jpg",
+      "rating": 4.5
+    },
+    {
+      "id": 2,
+      "name": "Smart Watch Series 5",
+      "description": "Fitness tracking smartwatch with heart rate monitor.",
+      "price": 199.99,
+      "category": "Wearables",
+      "stock": 18,
+      "imageUrl": "/ProductImage/smartwatch.jpg",
+      "rating": 4.7
+    },
+    {
+      "id": 3,
+      "name": "Gaming Laptop",
+      "description": "High-performance gaming laptop with RTX 3070 GPU.",
+      "price": 1299.99,
+      "category": "Computers",
+      "stock": 10,
+      "imageUrl": "/ProductImage/gaming-laptop.jpg",
+      "rating": 4.8
+    },
+    {
+      "id": 4,
+      "name": "Mechanical Keyboard",
+      "description": "RGB backlit mechanical keyboard with blue switches.",
+      "price": 89.99,
+      "category": "Accessories",
+      "stock": 30,
+      "imageUrl": "/ProductImage/keyboard.jpg",
+      "rating": 4.6
+    },
+    {
+      "id": 5,
+      "name": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse with adjustable DPI settings.",
+      "price": 29.99,
+      "category": "Accessories",
+      "stock": 50,
+      "imageUrl": "/ProductImage/mouse.jpg",
+      "rating": 4.3
+    },
+    {
+      "id": 6,
+      "name": "4K UHD Smart TV",
+      "description": "55-inch 4K Ultra HD Smart TV with HDR support.",
+      "price": 599.99,
+      "category": "Electronics",
+      "stock": 8,
+      "imageUrl": "/ProductImage/tv.jpg",
+      "rating": 4.9
+    },
+    {
+      "id": 7,
+      "name": "Noise Cancelling Earbuds",
+      "description": "True wireless earbuds with active noise cancellation.",
+      "price": 129.99,
+      "category": "Electronics",
+      "stock": 20,
+      "imageUrl": "/ProductImage/earbuds.jpg",
+      "rating": 4.4
+    },
+    {
+      "id": 8,
+      "name": "Portable Power Bank",
+      "description": "10000mAh power bank with fast charging support.",
+      "price": 39.99,
+      "category": "Accessories",
+      "stock": 40,
+      "imageUrl": "/ProductImage/powerbank.jpg",
+      "rating": 4.5
+    },
+
+    {
+      "id": 9,
+      "name": "Wireless Charger",
+      "description": "Fast wireless charger compatible with iPhone and Android.",
+      "price": 19.99,
+      "category": "Accessories",
+      "stock": 45,
+      "imageUrl": "/ProductImage/wireless-charger.jpg",
+      "rating": 4.3
+    },
+    {
+      "id": 10,
+      "name": "External Hard Drive 1TB",
+      "description": "USB 3.0 external hard drive for fast data storage.",
+      "price": 79.99,
+      "category": "Computers",
+      "stock": 22,
+      "imageUrl": "/ProductImage/hard-drive.jpg",
+      "rating": 4.6
+    },
+    {
+      "id": 11,
+      "name": "Android Smartphone",
+      "description": "6.5-inch display, 128GB storage, and triple-camera setup.",
+      "price": 399.99,
+      "category": "Electronics",
+      "stock": 12,
+      "imageUrl": "/ProductImage/smartphone.jpg",
+      "rating": 4.7
+    },
+    {
+      "id": 12,
+      "name": "Laptop Cooling Pad",
+      "description": "Multi-fan laptop cooling pad with adjustable height.",
+      "price": 34.99,
+      "category": "Accessories",
+      "stock": 28,
+      "imageUrl": "/ProductImage/cooling-pad.jpg",
+      "rating": 4.5
+    },
+    {
+      "id": 13,
+      "name": "Smart Home Speaker",
+      "description": "Voice-controlled smart home speaker with Alexa.",
+      "price": 89.99,
+      "category": "Electronics",
+      "stock": 15,
+      "imageUrl": "/ProductImage/smart-speaker.jpg",
+      "rating": 4.6
+    },
+    {
+      "id": 14,
+      "name": "Tablet 10-inch",
+      "description": "Android tablet with 64GB storage and 8MP camera.",
+      "price": 249.99,
+      "category": "Electronics",
+      "stock": 14,
+      "imageUrl": "/ProductImage/tablet.jpg",
+      "rating": 4.4
+    },
+    {
+      "id": 15,
+      "name": "Gaming Chair",
+      "description": "Ergonomic gaming chair with lumbar support.",
+      "price": 159.99,
+      "category": "Furniture",
+      "stock": 9,
+      "imageUrl": "/ProductImage/gaming-chair.jpg",
+      "rating": 4.8
+    }
+  ]
+}
