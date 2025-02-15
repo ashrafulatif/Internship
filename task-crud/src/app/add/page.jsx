@@ -13,14 +13,21 @@ import {
   Grid,
 } from "@mui/material";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const AddAdvocacy = () => {
-  const [settingName, setSettingName] = useState("");
-  const [modeOfInitiative, setModeOfInitiative] = useState("");
-  const [budget, setBudget] = useState("");
-  const [status, setStatus] = useState("Active");
-  const [createdDate, setCreatedDate] = useState("");
-  const [creator] = useState("Ashraful Haque"); // Static value
+const AddProduct = () => {
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [stockQuantity, setStockQuantity] = useState("");
+  const [releaseDate, setReleaseDate] = useState("");
+  const [category, setCategory] = useState("Electronics");
+  const [features, setFeatures] = useState([
+    "Waterproof",
+    "Wireless",
+    "Fast Charging",
+  ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -30,28 +37,35 @@ const AddAdvocacy = () => {
     setError(null);
 
     const data = {
-      settingName,
-      modeOfInitiative,
-      budget,
-      status,
-      createdDate,
-      creator,
+      productName,
+      productDescription,
+      price: parseFloat(price),
+      stockQuantity: parseInt(stockQuantity),
+      releaseDate,
+      features,
+      category,
     };
 
     try {
       const response = await axios.post(
-        "https://dummyjson.com/c/7e86-ff63-4101-9bf2",
+        "http://localhost:1000/product-management/add-product",
         data
       );
-      console.log("Advocacy Created:", response.data);
-      //clear the form
-      setSettingName("");
-      setModeOfInitiative("");
-      setBudget("");
-      setCreatedDate("");
+      console.log("Product Created:", response.data);
+
+      toast.success("Product created successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      setProductName("");
+      setProductDescription("");
+      setPrice("");
+      setStockQuantity("");
+      setReleaseDate("");
     } catch (err) {
-      console.error("Error adding advocacy:", err);
-      setError("Failed to create advocacy. Please try again.");
+      console.error("Error adding product:", err);
+      setError("Failed to create product. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -63,101 +77,99 @@ const AddAdvocacy = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh", // Centers the form vertically and horizontally
+        minHeight: "100vh",
         backgroundColor: "#f5f5f5",
       }}
     >
       <Box
         sx={{
           width: "100%",
-          maxWidth: 600, // Limits the form width
+          maxWidth: 600,
           padding: 3,
           borderRadius: 2,
-          border: "1px solid #ddd", // Border around the form
+          border: "1px solid #ddd",
           backgroundColor: "white",
         }}
       >
         <Typography variant="h6" align="center">
-          Create a new Advocacy Settings
+          Create a New Product
         </Typography>
         <Box variant="outlined" p={2} mt={2}>
           <Typography variant="h6" align="center">
-            Form Information
+            Product Information
           </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={2}>
-              {/* Setting Name Field */}
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  label="Setting Name"
+                  label="Product Name"
                   fullWidth
-                  value={settingName}
-                  onChange={(e) => setSettingName(e.target.value)}
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
                   required
                 />
               </Grid>
-
-              {/* Mode of Initiative Dropdown */}
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required>
-                  <InputLabel>Mode of Initiative</InputLabel>
-                  <Select
-                    value={modeOfInitiative}
-                    onChange={(e) => setModeOfInitiative(e.target.value)}
-                  >
-                    <MenuItem value="Web Development">Web Development</MenuItem>
-                    <MenuItem value="Mobile Development">
-                      Mobile Development
-                    </MenuItem>
-                    <MenuItem value="Digital Marketing">
-                      Digital Marketing
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+              <Grid item xs={12}>
+                <TextField
+                  label="Product Description"
+                  fullWidth
+                  value={productDescription}
+                  onChange={(e) => setProductDescription(e.target.value)}
+                  required
+                  multiline
+                  rows={4}
+                />
               </Grid>
-
-              {/* Budget Field */}
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Budget"
+                  label="Price"
                   fullWidth
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                  type="number"
+                  inputProps={{ step: "0.01" }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Stock Quantity"
+                  fullWidth
+                  value={stockQuantity}
+                  onChange={(e) => setStockQuantity(e.target.value)}
                   required
                   type="number"
                 />
               </Grid>
-
-              {/* Status Dropdown */}
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required>
-                  <Select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                  >
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              {/* Created Date Field */}
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Created Date"
+                  label="Release Date"
                   fullWidth
-                  type="datet"
-                  value={createdDate}
-                  onChange={(e) => setCreatedDate(e.target.value)}
+                  type="date"
+                  value={releaseDate}
+                  onChange={(e) => setReleaseDate(e.target.value)}
                   required
                   InputLabelProps={{
-                    shrink: true, // Ensures the label stays above the input
+                    shrink: true,
                   }}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <MenuItem value="Electronics">Electronics</MenuItem>
+                    <MenuItem value="Fashion">Fashion</MenuItem>
+                    <MenuItem value="Home Appliances">Home Appliances</MenuItem>
+                    <MenuItem value="Sports">Sports</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
 
-            {/* Submit Button */}
             <Box mt={2} textAlign="right">
               <Button
                 type="submit"
@@ -169,7 +181,6 @@ const AddAdvocacy = () => {
               </Button>
             </Box>
 
-            {/* Error message */}
             {error && (
               <Typography color="error" mt={2} align="center">
                 {error}
@@ -178,8 +189,11 @@ const AddAdvocacy = () => {
           </form>
         </Box>
       </Box>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </Box>
   );
 };
 
-export default AddAdvocacy;
+export default AddProduct;
