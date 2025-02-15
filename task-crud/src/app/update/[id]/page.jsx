@@ -73,7 +73,10 @@ const UpdateProduct = () => {
         updatedProduct
       );
 
-      toast.success("Product updated successfully!");
+      toast.success("Product updated successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
       router.push("/"); // Redirect to product list after update
     } catch (error) {
       console.error("Error updating product:", error);

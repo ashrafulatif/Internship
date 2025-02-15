@@ -22,7 +22,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [releaseDate, setReleaseDate] = useState("");
-  const [category, setCategory] = useState("Electronics");
+  const [category, setCategory] = useState("");
   const [features, setFeatures] = useState([
     "Waterproof",
     "Wireless",
@@ -95,7 +95,7 @@ const AddProduct = () => {
           Create a New Product
         </Typography>
         <Box variant="outlined" p={2} mt={2}>
-          <Typography variant="h6" align="center">
+          <Typography variant="h6" align="left">
             Product Information
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -162,9 +162,10 @@ const AddProduct = () => {
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     <MenuItem value="Electronics">Electronics</MenuItem>
-                    <MenuItem value="Fashion">Fashion</MenuItem>
-                    <MenuItem value="Home Appliances">Home Appliances</MenuItem>
+                    <MenuItem value="Clothing">Clothing</MenuItem>
+                    <MenuItem value="Home & Kitchen">Home & Kitchen</MenuItem>
                     <MenuItem value="Sports">Sports</MenuItem>
+                    <MenuItem value="Books">Books</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
