@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Box,
   Typography,
@@ -30,6 +31,7 @@ const AddProduct = () => {
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,8 +57,13 @@ const AddProduct = () => {
 
       toast.success("Product created successfully!", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1000,
+        hideProgressBar: true,
       });
+
+      setTimeout(() => {
+        router.push("./");
+      }, 1000);
 
       setProductName("");
       setProductDescription("");

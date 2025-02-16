@@ -14,7 +14,7 @@ import {
   Grid,
 } from "@mui/material";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UpdateProduct = () => {
@@ -75,9 +75,13 @@ const UpdateProduct = () => {
 
       toast.success("Product updated successfully!", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1000,
+        hideProgressBar: true,
       });
-      router.push("/"); // Redirect to product list after update
+      // Redirect to product list after update
+      setTimeout(() => {
+        router.push("../");
+      }, 1000);
     } catch (error) {
       console.error("Error updating product:", error);
       toast.error("Failed to update product.");
@@ -193,6 +197,7 @@ const UpdateProduct = () => {
           </Box>
         </form>
       </Box>
+      <ToastContainer />
     </Box>
   );
 };

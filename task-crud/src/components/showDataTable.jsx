@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -81,7 +81,11 @@ const ProductTable = () => {
       await axios.delete(
         `http://localhost:1000/product-management/remove-product/${selectedProduct.productId}`
       );
-      toast.success("Product deleted successfully!");
+      toast.error("Product has been deleted!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
       setProducts(
         products.filter(
           (product) => product.productId !== selectedProduct.productId
@@ -197,6 +201,7 @@ const ProductTable = () => {
         product={selectedProduct}
         onProductUpdate={handleProductUpdate}
       />
+      <ToastContainer />
     </Box>
   );
 };

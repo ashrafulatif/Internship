@@ -37,8 +37,8 @@ const QuickEditDialog = ({ open, handleClose, product, onProductUpdate }) => {
         `http://localhost:1000/product-management/modify-product/${product.productId}`,
         updatedProduct
       );
-      toast.success("Product updated successfully!");
-      onProductUpdate(updatedProduct); // Update the parent state
+      toast.success("Product updated successfully!"),
+        onProductUpdate(updatedProduct); // Update the parent state
       handleClose();
     } catch (error) {
       console.error("Error updating product:", error);
