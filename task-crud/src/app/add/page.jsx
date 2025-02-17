@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Typography,
@@ -17,8 +18,10 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import productSchema from "@/utils/productSchema";
 
 const AddProduct = () => {
+  //initialize react hook  form
   const {
     register,
     handleSubmit,
@@ -26,6 +29,7 @@ const AddProduct = () => {
     formState: { errors },
     reset,
   } = useForm({
+    resolver: zodResolver(productSchema), //zod integretation
     defaultValues: {
       productName: "",
       productDescription: "",
@@ -33,6 +37,7 @@ const AddProduct = () => {
       stockQuantity: "",
       releaseDate: "",
       category: "",
+      features: ["Whaterproof", "Wireless", "Fast charging"],
     },
   });
 
