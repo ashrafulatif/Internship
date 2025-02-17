@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
 import {
   Box,
   Typography,
@@ -18,40 +19,39 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddProduct = () => {
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stockQuantity, setStockQuantity] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
-  const [category, setCategory] = useState("");
-  const [features, setFeatures] = useState([
-    "Waterproof",
-    "Wireless",
-    "Fast Charging",
-  ]);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      productName: "",
+      productDescription: "",
+      price: "",
+      stockQuantity: "",
+      releaseDate: "",
+      category: "",
+    },
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setLoading(true);
     setError(null);
-
-    const data = {
-      productName,
-      productDescription,
-      price: parseFloat(price),
-      stockQuantity: parseInt(stockQuantity),
-      releaseDate,
-      features,
-      category,
-    };
 
     try {
       const response = await axios.post(
         "http://localhost:1000/product-management/add-product",
-        data
+        {
+          ...data,
+          price: parseFloat(data.price),
+          stockQuantity: parseInt(data.stockQuantity),
+        }
       );
       console.log("Product Created:", response.data);
 
@@ -65,11 +65,7 @@ const AddProduct = () => {
         router.push("./");
       }, 1000);
 
-      setProductName("");
-      setProductDescription("");
-      setPrice("");
-      setStockQuantity("");
-      setReleaseDate("");
+      reset(); // Reset form after submission
     } catch (err) {
       console.error("Error adding product:", err);
       setError("Failed to create product. Please try again.");
@@ -105,75 +101,101 @@ const AddProduct = () => {
           <Typography variant="h6" align="left">
             Product Information
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2} mt={2}>
               <Grid item xs={12}>
                 <TextField
                   label="Product Name"
                   fullWidth
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                  required
+                  {...register("productName", {
+                    required: "Product Name is required",
+                  })}
+                  error={!!errors.productName}
+                  helperText={errors.productName?.message}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   label="Product Description"
                   fullWidth
-                  value={productDescription}
-                  onChange={(e) => setProductDescription(e.target.value)}
-                  required
                   multiline
                   rows={4}
+                  {...register("productDescription", {
+                    required: "Description is required",
+                  })}
+                  error={!!errors.productDescription}
+                  helperText={errors.productDescription?.message}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Price"
                   fullWidth
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
                   type="number"
                   inputProps={{ step: "0.01" }}
+                  {...register("price", {
+                    required: "Price is required",
+                    min: { value: 0, message: "Price must be greater than 0" },
+                  })}
+                  error={!!errors.price}
+                  helperText={errors.price?.message}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Stock Quantity"
                   fullWidth
-                  value={stockQuantity}
-                  onChange={(e) => setStockQuantity(e.target.value)}
-                  required
                   type="number"
+                  {...register("stockQuantity", {
+                    required: "Stock Quantity is required",
+                    min: { value: 1, message: "Must be at least 1" },
+                  })}
+                  error={!!errors.stockQuantity}
+                  helperText={errors.stockQuantity?.message}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Release Date"
                   fullWidth
                   type="date"
-                  value={releaseDate}
-                  onChange={(e) => setReleaseDate(e.target.value)}
-                  required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={{ shrink: true }}
+                  {...register("releaseDate", {
+                    required: "Release Date is required",
+                  })}
+                  error={!!errors.releaseDate}
+                  helperText={errors.releaseDate?.message}
                 />
               </Grid>
+
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required>
+                <FormControl fullWidth error={!!errors.category}>
                   <InputLabel>Category</InputLabel>
-                  <Select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  >
-                    <MenuItem value="Electronics">Electronics</MenuItem>
-                    <MenuItem value="Clothing">Clothing</MenuItem>
-                    <MenuItem value="Home & Kitchen">Home & Kitchen</MenuItem>
-                    <MenuItem value="Sports">Sports</MenuItem>
-                    <MenuItem value="Books">Books</MenuItem>
-                  </Select>
+                  <Controller
+                    name="category"
+                    control={control}
+                    rules={{ required: "Category is required" }}
+                    render={({ field }) => (
+                      <Select {...field}>
+                        <MenuItem value="Electronics">Electronics</MenuItem>
+                        <MenuItem value="Clothing">Clothing</MenuItem>
+                        <MenuItem value="Home & Kitchen">
+                          Home & Kitchen
+                        </MenuItem>
+                        <MenuItem value="Sports">Sports</MenuItem>
+                        <MenuItem value="Books">Books</MenuItem>
+                      </Select>
+                    )}
+                  />
+                  {errors.category && (
+                    <Typography color="error" variant="caption">
+                      {errors.category.message}
+                    </Typography>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>
