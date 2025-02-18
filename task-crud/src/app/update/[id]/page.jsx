@@ -13,23 +13,27 @@ import {
   InputLabel,
   Grid,
 } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const UpdateProduct = () => {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams();
   const router = useRouter();
-
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stockQuantity, setStockQuantity] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
-  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
+  const [productData, setProductData] = useState(null); // Manage product data state
 
-  // Fetch existing product details
+  // Initialize react-hook-form
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  // Fetch product details and set default values
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -37,13 +41,17 @@ const UpdateProduct = () => {
           `http://localhost:1000/product-management/find-product/${id}`
         );
         const product = response.data;
+        setProductData(product); // Set fetched data
 
-        setProductName(product.productName);
-        setProductDescription(product.productDescription);
-        setPrice(product.price);
-        setStockQuantity(product.stockQuantity);
-        setReleaseDate(product.releaseDate);
-        setCategory(product.category);
+        // Set default values for form fields
+        reset({
+          productName: product.productName,
+          productDescription: product.productDescription,
+          price: product.price,
+          stockQuantity: product.stockQuantity,
+          releaseDate: product.releaseDate,
+          category: product.category,
+        });
       } catch (error) {
         console.error("Error fetching product:", error);
         toast.error("Failed to fetch product details.");
@@ -51,20 +59,19 @@ const UpdateProduct = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [id, reset]);
 
   // Handle form submission
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setLoading(true);
 
     const updatedProduct = {
-      productName,
-      productDescription,
-      price: parseFloat(price),
-      stockQuantity: parseInt(stockQuantity),
-      releaseDate,
-      category,
+      productName: data.productName,
+      productDescription: data.productDescription,
+      price: parseFloat(data.price),
+      stockQuantity: parseInt(data.stockQuantity),
+      releaseDate: data.releaseDate,
+      category: data.category,
     };
 
     try {
@@ -78,7 +85,7 @@ const UpdateProduct = () => {
         autoClose: 1000,
         hideProgressBar: true,
       });
-      // Redirect to product list after update
+
       setTimeout(() => {
         router.push("../");
       }, 1000);
@@ -89,6 +96,23 @@ const UpdateProduct = () => {
       setLoading(false);
     }
   };
+
+  // Show loading state or form once product data is fetched
+  if (!productData) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -113,75 +137,126 @@ const UpdateProduct = () => {
         <Typography variant="h6" align="center">
           Update Product
         </Typography>
-        <form onSubmit={handleUpdate}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} mt={2}>
             <Grid item xs={12}>
-              <TextField
-                label="Product Name"
-                fullWidth
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                required
+              <Controller
+                name="productName"
+                control={control}
+                rules={{ required: "Product name is required" }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Product Name"
+                    fullWidth
+                    error={!!errors.productName}
+                    helperText={errors.productName?.message}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                label="Product Description"
-                fullWidth
-                value={productDescription}
-                onChange={(e) => setProductDescription(e.target.value)}
-                required
-                multiline
-                rows={4}
+              <Controller
+                name="productDescription"
+                control={control}
+                rules={{ required: "Product description is required" }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Product Description"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    error={!!errors.productDescription}
+                    helperText={errors.productDescription?.message}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Price"
-                fullWidth
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-                type="number"
-                inputProps={{ step: "0.01" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Stock Quantity"
-                fullWidth
-                value={stockQuantity}
-                onChange={(e) => setStockQuantity(e.target.value)}
-                required
-                type="number"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Release Date"
-                fullWidth
-                type="date"
-                value={releaseDate}
-                onChange={(e) => setReleaseDate(e.target.value)}
-                required
-                InputLabelProps={{
-                  shrink: true,
+              <Controller
+                name="price"
+                control={control}
+                rules={{
+                  required: "Price is required",
+                  min: { value: 0, message: "Price must be positive" },
                 }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Price"
+                    fullWidth
+                    type="number"
+                    inputProps={{ step: "0.01" }}
+                    error={!!errors.price}
+                    helperText={errors.price?.message}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
+              <Controller
+                name="stockQuantity"
+                control={control}
+                rules={{
+                  required: "Stock quantity is required",
+                  min: { value: 1, message: "Quantity must be at least 1" },
+                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Stock Quantity"
+                    fullWidth
+                    type="number"
+                    error={!!errors.stockQuantity}
+                    helperText={errors.stockQuantity?.message}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="releaseDate"
+                control={control}
+                rules={{ required: "Release date is required" }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Release Date"
+                    fullWidth
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    error={!!errors.releaseDate}
+                    helperText={errors.releaseDate?.message}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth required error={!!errors.category}>
                 <InputLabel>Category</InputLabel>
-                <Select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  <MenuItem value="Electronics">Electronics</MenuItem>
-                  <MenuItem value="Fashion">Fashion</MenuItem>
-                  <MenuItem value="Home Appliances">Home Appliances</MenuItem>
-                  <MenuItem value="Sports">Sports</MenuItem>
-                </Select>
+                <Controller
+                  name="category"
+                  control={control}
+                  defaultValue={""}
+                  rules={{ required: "Category is required" }}
+                  render={({ field }) => (
+                    <Select {...field}>
+                      <MenuItem value="Electronics">Electronics</MenuItem>
+                      <MenuItem value="Fashion">Fashion</MenuItem>
+                      <MenuItem value="Home Appliances">
+                        Home Appliances
+                      </MenuItem>
+                      <MenuItem value="Sports">Sports</MenuItem>
+                    </Select>
+                  )}
+                />
               </FormControl>
+              {errors.category && (
+                <Typography color="error" variant="caption">
+                  {errors.category.message}
+                </Typography>
+              )}
             </Grid>
           </Grid>
 

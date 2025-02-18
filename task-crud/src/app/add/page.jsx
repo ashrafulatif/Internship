@@ -52,11 +52,7 @@ const AddProduct = () => {
     try {
       const response = await axios.post(
         "http://localhost:1000/product-management/add-product",
-        {
-          ...data,
-          price: parseFloat(data.price),
-          stockQuantity: parseInt(data.stockQuantity),
-        }
+        data
       );
       console.log("Product Created:", response.data);
 
