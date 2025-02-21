@@ -6,7 +6,15 @@ import sendMail from "@/actions/sendMail";
 
 const ContactInfo = () => {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
       <ContactView sendMail={sendMail} />
     </Box>
   );

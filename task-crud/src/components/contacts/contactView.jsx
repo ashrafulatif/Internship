@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { contactFormSchema } from "@/utils/contactFormSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Box,
   Typography,
@@ -16,9 +21,10 @@ const ContactView = ({ sendMail }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
-      from: "", 
+      from: "",
       description: "",
     },
   });
@@ -30,12 +36,22 @@ const ContactView = ({ sendMail }) => {
     setLoading(true);
     setError(null);
 
-    const response = await sendMail(data);
-    if (!response.success) {
-      setError(response.error);
+    try {
+      const response = await sendMail(data);
+      if (response.success) {
+        toast.success("Message sent successfully!", {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: true,
+        });
+      } else {
+        setError(response.error);
+      }
+    } catch (err) {
+      setError("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -114,6 +130,7 @@ const ContactView = ({ sendMail }) => {
           )}
         </form>
       </Box>
+      <ToastContainer />
     </Box>
   );
 };

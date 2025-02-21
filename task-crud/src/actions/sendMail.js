@@ -13,7 +13,7 @@ export default async function sendMail({ name, from, description }) {
 
     const mailOptions = {
       from: from,
-      to: process.env.MAIL_RECEVIER_ADDRESS,
+      to: process.env.MAIL_RECEIVER_ADDRESS,
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h3>Contact Details</h3>
