@@ -5,6 +5,7 @@ import { contactFormSchema } from "@/utils/contactFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 import {
   Box,
@@ -31,6 +32,7 @@ const ContactView = ({ sendMail }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -44,6 +46,10 @@ const ContactView = ({ sendMail }) => {
           autoClose: 1000,
           hideProgressBar: true,
         });
+        //redirect
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
       } else {
         setError(response.error);
       }
@@ -87,10 +93,6 @@ const ContactView = ({ sendMail }) => {
                 fullWidth
                 {...register("from", {
                   required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Invalid email format",
-                  },
                 })}
                 error={!!errors.from}
                 helperText={errors.from?.message}
