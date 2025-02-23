@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 
 const ContactView = ({ sendMail }) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,7 +33,6 @@ const ContactView = ({ sendMail }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const router = useRouter();
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -46,7 +46,7 @@ const ContactView = ({ sendMail }) => {
           autoClose: 1000,
           hideProgressBar: true,
         });
-        //redirect
+
         setTimeout(() => {
           router.push("/");
         }, 1000);
@@ -54,6 +54,7 @@ const ContactView = ({ sendMail }) => {
         setError(response.error);
       }
     } catch (err) {
+      console.error("Error in onSubmit:", err);
       setError("Failed to send message. Please try again.");
     } finally {
       setLoading(false);

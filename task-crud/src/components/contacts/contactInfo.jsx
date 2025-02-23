@@ -1,4 +1,3 @@
-"use client";
 import { Box } from "@mui/material";
 import React from "react";
 import ContactView from "@/components/contacts/ContactView";

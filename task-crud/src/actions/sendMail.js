@@ -26,6 +26,7 @@ export default async function sendMail({ name, from, description }) {
     await transporter.sendMail(mailOptions);
     return { success: true };
   } catch (error) {
-    return { success: false, error: "Failed to send email" };
+    console.error("Error sending email:", error);
+    return { success: false, error: error.message || "Failed to send email" };
   }
 }
