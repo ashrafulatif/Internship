@@ -7,8 +7,10 @@ const ChatLogic = () => {
   const handleSendMessage = (message) => {
     if (!message.trim()) return;
 
+    //create user message obj
     const userMessage = { text: message, sender: "user" };
-    let botReply = "I will get back to you on that.";
+    let botReply =
+      "I will get back to you on that. Thank you! For emergency, please call 1247!.";
 
     const lowerCaseMessage = message.toLowerCase().trim();
 

@@ -3,8 +3,8 @@
   "what is your name": "I'm a ChatBot!",
   "how are you": "I'm doing great, thanks for asking!",
   "bye": "Goodbye! Have a nice day!",
-  "what can you do": "I can answer predefined questions!",
-  "where are you from": "I'm from the internet!",
+  "what can you do": "I can help you with your questions!",
+  "where are you from": "I am from the internet!",
   "tell me a joke": "Why don’t skeletons fight each other? Because they don’t have the guts!",
   "what is next.js": "Next.js is a React framework for production.",
   "who created you": "I was created by a developer using Next.js!"

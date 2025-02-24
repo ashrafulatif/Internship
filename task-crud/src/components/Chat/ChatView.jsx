@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import ChatLogic from "@/components/Chat/ChatLogic";
 
+
 const ChatView = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -35,7 +36,7 @@ const ChatView = () => {
             position: "fixed",
             bottom: 80,
             right: 20,
-            width: 300,
+            width: 350,
             p: 2,
             borderRadius: 2,
             display: "flex",
@@ -49,18 +50,19 @@ const ChatView = () => {
             </IconButton>
           </Box>
 
-          <Box sx={{ height: 200, overflowY: "auto", p: 1, mb: 1 }}>
+          <Box sx={{ height: 300, overflowY: "auto", p: 1, mb: 1 }}>
             {messages.map((msg, index) => (
               <Typography
                 key={index}
                 sx={{
-                  textAlign: msg.sender === "user" ? "right" : "left",
+                  display: "flex",
+                  justifyContent:
+                    msg.sender === "user" ? "flex-end" : "flex-start",
                   backgroundColor:
                     msg.sender === "user" ? "#d1e7ff" : "#e0e0e0",
                   p: 1,
                   borderRadius: 1,
-                  my: 0.5,
-                  display: "inline-block",
+                  my: 1,
                 }}
               >
                 {msg.text}
@@ -75,7 +77,12 @@ const ChatView = () => {
               placeholder="Type a message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage(message)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSendMessage(message);
+                  setMessage("");
+                }
+              }}
             />
             <IconButton
               color="primary"
