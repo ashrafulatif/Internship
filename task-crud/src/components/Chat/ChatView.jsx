@@ -14,6 +14,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ChatLogic from "@/components/Chat/ChatLogic";
 import UserIcon from "@mui/icons-material/Person";
 import BotIcon from "@mui/icons-material/Computer";
+import { Typewriter } from "react-simple-typewriter";
 
 const ChatView = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,8 +65,6 @@ const ChatView = () => {
                 key={index}
                 sx={{
                   display: "flex",
-                  //   justifyContent:
-                  //     msg.sender === "user" ? "flex-end" : "flex-start",
                   flexDirection: msg.sender === "user" ? "row-reverse" : "row",
                   alignItems: "center",
                   mb: 1,
@@ -91,7 +90,16 @@ const ChatView = () => {
                     wordWrap: "break-word",
                   }}
                 >
-                  {msg.text}
+                  {msg.sender === "bot" ? (
+                    <Typewriter
+                      words={[msg.text]} // Wrap text in an array
+                      loop={1} // Show once
+                      typeSpeed={50} // Adjust speed as needed
+                      cursor={false}
+                    />
+                  ) : (
+                    msg.text
+                  )}
                 </Typography>
               </Box>
             ))}
