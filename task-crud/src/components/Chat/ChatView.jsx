@@ -1,11 +1,19 @@
 "use client";
 import { useState } from "react";
-import { Box, IconButton, TextField, Typography, Paper } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  TextField,
+  Typography,
+  Paper,
+  Avatar,
+} from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import ChatLogic from "@/components/Chat/ChatLogic";
-
+import UserIcon from "@mui/icons-material/Person";
+import BotIcon from "@mui/icons-material/Computer";
 
 const ChatView = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,21 +60,40 @@ const ChatView = () => {
 
           <Box sx={{ height: 300, overflowY: "auto", p: 1, mb: 1 }}>
             {messages.map((msg, index) => (
-              <Typography
+              <Box
                 key={index}
                 sx={{
                   display: "flex",
-                  justifyContent:
-                    msg.sender === "user" ? "flex-end" : "flex-start",
-                  backgroundColor:
-                    msg.sender === "user" ? "#d1e7ff" : "#e0e0e0",
-                  p: 1,
-                  borderRadius: 1,
-                  my: 1,
+                  //   justifyContent:
+                  //     msg.sender === "user" ? "flex-end" : "flex-start",
+                  flexDirection: msg.sender === "user" ? "row-reverse" : "row",
+                  alignItems: "center",
+                  mb: 1,
                 }}
               >
-                {msg.text}
-              </Typography>
+                {msg.sender === "user" ? (
+                  <Avatar sx={{ bgcolor: "#1976d2", ml: 1 }}>
+                    <UserIcon />
+                  </Avatar>
+                ) : (
+                  <Avatar sx={{ bgcolor: "#e0e0e0", mr: 1 }}>
+                    <BotIcon />
+                  </Avatar>
+                )}
+
+                <Typography
+                  sx={{
+                    backgroundColor:
+                      msg.sender === "user" ? "#d1e7ff" : "#e0e0e0",
+                    p: 1,
+                    borderRadius: 1,
+                    maxWidth: "80%",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {msg.text}
+                </Typography>
+              </Box>
             ))}
           </Box>
 
@@ -86,7 +113,10 @@ const ChatView = () => {
             />
             <IconButton
               color="primary"
-              onClick={() => handleSendMessage(message)}
+              onClick={() => {
+                handleSendMessage(message);
+                setMessage("");
+              }}
             >
               <SendIcon />
             </IconButton>
