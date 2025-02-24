@@ -1,6 +1,5 @@
 import { Server } from "socket.io";
-
-let io;
+import { NextResponse } from "next/server";
 
 const predefinedQA = {
   hello: "Hi there! How can I help you?",
@@ -9,23 +8,25 @@ const predefinedQA = {
   bye: "Goodbye! Have a nice day!",
 };
 
-export async function GET(req) {
+let io;
+
+export async function GET() {
   if (!io) {
-    io = new Server(globalThis.server, {
+    io = new Server(3001, {
       path: "/api/socket",
-      addTrailingSlash: false,
+      cors: { origin: "*" },
     });
 
     io.on("connection", (socket) => {
       console.log("User connected");
 
       socket.on("sendMessage", (message) => {
-        console.log("User:", message);
-
-        // Check predefined Q&A
-        const reply = predefinedQA[message.toLowerCase()] || null;
-        if (reply) {
-          io.emit("receiveMessage", { text: reply, sender: "bot" });
+        const text = message.toLowerCase().trim();
+        
+        if (predefinedQA[text]) {
+          socket.emit("receiveMessage", { text: predefinedQA[text], sender: "bot" });
+        } else {
+          socket.emit("receiveMessage", { text: "I will get back to you on that.", sender: "bot" });
         }
       });
 
@@ -33,9 +34,7 @@ export async function GET(req) {
         console.log("User disconnected");
       });
     });
-
-    globalThis.io = io; // Store it globally to prevent multiple instances
   }
 
-  return new Response("Socket.IO Server Initialized", { status: 200 });
+  return NextResponse.json({ message: "Socket server initialized" });
 }

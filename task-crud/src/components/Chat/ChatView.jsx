@@ -1,52 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, IconButton, TextField, Typography, Paper } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
-import { io } from "socket.io-client";
+import ChatLogic from "@/components/Chat/ChatLogic";
 
-let socket;
-
-const ChatPopup = () => {
+const ChatView = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/socket"); // Ensure the server initializes
-
-    socket = io({
-      path: "/api/socket",
-    });
-
-    socket.on("receiveMessage", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      const newMessage = { text: message, sender: "user" };
-      setMessages([...messages, newMessage]);
-      socket.emit("sendMessage", message);
-      setMessage("");
-    }
-  };
+  const { messages, handleSendMessage } = ChatLogic();
 
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: 20,
-        right: 20,
-      }}
-    >
-      {/* Floating Chat Icon */}
+    <Box sx={{ position: "fixed", bottom: 20, right: 20 }}>
       {!isOpen && (
         <IconButton
           onClick={() => setIsOpen(true)}
@@ -62,7 +28,6 @@ const ChatPopup = () => {
         </IconButton>
       )}
 
-      {/* Chat Box */}
       {isOpen && (
         <Paper
           elevation={4}
@@ -77,33 +42,14 @@ const ChatPopup = () => {
             flexDirection: "column",
           }}
         >
-          {/* Header */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 1,
-            }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
             <Typography variant="h6">Chat</Typography>
             <IconButton onClick={() => setIsOpen(false)} size="small">
               <CloseIcon />
             </IconButton>
           </Box>
 
-          {/* Messages Display */}
-          <Box
-            sx={{
-              height: 200,
-              overflowY: "auto",
-              border: "1px solid #ccc",
-              borderRadius: 1,
-              p: 1,
-              mb: 1,
-              backgroundColor: "#f9f9f9",
-            }}
-          >
+          <Box sx={{ height: 200, overflowY: "auto", p: 1, mb: 1 }}>
             {messages.map((msg, index) => (
               <Typography
                 key={index}
@@ -122,18 +68,19 @@ const ChatPopup = () => {
             ))}
           </Box>
 
-          {/* Input Field */}
           <Box sx={{ display: "flex", gap: 1 }}>
             <TextField
               size="small"
-              variant="outlined"
               fullWidth
               placeholder="Type a message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage(message)}
             />
-            <IconButton color="primary" onClick={handleSendMessage}>
+            <IconButton
+              color="primary"
+              onClick={() => handleSendMessage(message)}
+            >
               <SendIcon />
             </IconButton>
           </Box>
@@ -143,4 +90,4 @@ const ChatPopup = () => {
   );
 };
 
-export default ChatPopup;
+export default ChatView;
