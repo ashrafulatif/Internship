@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme/theme";
+import ChatView from "@/components/Chat/ChatView";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider theme={theme}>
           <Navbar />
           {children}
+          <ChatView />
           <Footer />
         </ThemeProvider>
       </body>

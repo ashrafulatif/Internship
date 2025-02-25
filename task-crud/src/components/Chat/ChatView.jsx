@@ -7,6 +7,7 @@ import {
   Typography,
   Paper,
   Avatar,
+  Button,
 } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +20,7 @@ import { Typewriter } from "react-simple-typewriter";
 const ChatView = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const { messages, handleSendMessage } = ChatLogic();
+  const { messages, handleSendMessage, currentQuestions } = ChatLogic();
 
   return (
     <Box sx={{ position: "fixed", bottom: 20, right: 20 }}>
@@ -90,11 +91,11 @@ const ChatView = () => {
                     wordWrap: "break-word",
                   }}
                 >
-                  {msg.sender === "bot" ? (
+                  {msg.sender === "bot" && typeof msg.text === "string" ? (
                     <Typewriter
-                      words={[msg.text]} // Wrap text in an array
-                      loop={1} // Show once
-                      typeSpeed={50} // Adjust speed as needed
+                      words={[msg.text]}
+                      loop={1}
+                      typeSpeed={90}
                       cursor={false}
                     />
                   ) : (
@@ -103,6 +104,32 @@ const ChatView = () => {
                 </Typography>
               </Box>
             ))}
+
+            {/* Render dynamic follow-up questions */}
+            {currentQuestions.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  mt: 2,
+                }}
+              >
+                <Typography variant="body2" color="textSecondary">
+                  Would you like to ask one of these questions?
+                </Typography>
+                {currentQuestions.map((question) => (
+                  <Button
+                    key={question.id}
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleSendMessage(question.text)}
+                  >
+                    {question.text}
+                  </Button>
+                ))}
+              </Box>
+            )}
           </Box>
 
           <Box sx={{ display: "flex", gap: 1 }}>
