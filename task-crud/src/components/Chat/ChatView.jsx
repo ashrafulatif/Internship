@@ -46,7 +46,7 @@ const ChatView = () => {
             position: "fixed",
             bottom: 80,
             right: 20,
-            width: 350,
+            width: 370,
             p: 2,
             borderRadius: 2,
             display: "flex",
@@ -60,7 +60,7 @@ const ChatView = () => {
             </IconButton>
           </Box>
 
-          <Box sx={{ height: 300, overflowY: "auto", p: 1, mb: 1 }}>
+          <Box sx={{ height: 380, overflowY: "auto", p: 1, mb: 1 }}>
             {messages.map((msg, index) => (
               <Box
                 key={index}

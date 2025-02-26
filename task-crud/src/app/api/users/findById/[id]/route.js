@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
-export async function GET(req) {
+export async function GET({ params }) {
   try {
-    const { id } = req.params;
-    const user = await prisma.user.findUnique({ where: { id: parseInt(id, 10) } });
+    const { id } = params;
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(id, 10) },
+    });
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

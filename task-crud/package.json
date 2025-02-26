@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -16,6 +16,7 @@
     "@mui/material": "^6.4.4",
     "@prisma/client": "^6.4.1",
     "axios": "^1.7.9",
+    "cookie": "^1.0.2",
     "next": "15.1.7",
     "nodemailer": "^6.10.0",
     "prisma": "^6.4.1",
