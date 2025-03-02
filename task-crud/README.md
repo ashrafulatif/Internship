@@ -81,7 +81,7 @@ task-crud/
 |   ├──sendmail.js
 │   ├── app/
 │   │   ├── api/
-        |    ├── user
+|   |   |  └── user
 │   │   ├── index.js
 │   │   └── ...
 │   ├── components/
@@ -94,7 +94,7 @@ task-crud/
 │   │   └── theme.js
 |   ├── utils/
 │   │   ├── contactFormSchema.js
-│       └── productSchema.js
+│   |   └── productSchema.js
 │   └── server/
 │       ├── socket.js
 │       └── ...
