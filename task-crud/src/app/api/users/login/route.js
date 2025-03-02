@@ -19,14 +19,18 @@ export async function POST(req) {
 
     // Set a cookie with the session data
     const response = NextResponse.json(
-      { message: "Login successful" },
+      { message: "Login successful", role: user.role }, // Include the user's role
       { status: 200 }
     );
-    response.cookies.set("session", JSON.stringify({ userId: user.id }), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24, // 1 day
-    });
+    response.cookies.set(
+      "session",
+      JSON.stringify({ userId: user.id, role: user.role }),
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24, // 1 day
+      }
+    );
 
     return response;
   } catch (error) {

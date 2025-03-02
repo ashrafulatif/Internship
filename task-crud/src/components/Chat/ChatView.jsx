@@ -84,11 +84,12 @@ const ChatView = () => {
                 <Typography
                   sx={{
                     backgroundColor:
-                      msg.sender === "user" ? "#d1e7ff" : "#e0e0e0",
+                      msg.sender === "user" ? "#1976d2" : "#e0e0e0",
                     p: 1,
                     borderRadius: 1,
                     maxWidth: "80%",
                     wordWrap: "break-word",
+                    color: msg.sender === "user" ? "#fff" : "#000",
                   }}
                 >
                   {msg.sender === "bot" && typeof msg.text === "string" ? (

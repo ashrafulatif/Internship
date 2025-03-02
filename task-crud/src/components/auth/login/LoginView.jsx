@@ -32,8 +32,14 @@ const LoginView = () => {
         throw new Error("Failed to login");
       }
 
+      const { role } = response.data; // Get the user's role from the response
       console.log("User logged in:", response.data);
-      router.push("/dashboard"); 
+
+      if (role === "admin") {
+        router.push("/admindashboard"); // Redirect to the admin panel
+      } else {
+        router.push("/dashboard"); // Redirect to the buyer dashboard
+      }
     } catch (error) {
       console.error("Error logging in:", error);
       setError("Failed to login. Please try again.");

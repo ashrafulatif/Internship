@@ -22,7 +22,7 @@ const Dashboard = () => {
           }}
         >
           <Typography variant="h4" gutterBottom align="center">
-            Welcome!
+            Welcome Buyer!
           </Typography>
           <Typography variant="body1" gutterBottom align="center">
             Here you can manage your account, view your data, and perform other

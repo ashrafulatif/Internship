@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import qaData from "@/data/qaData.json";
+
+const socket = io("http://localhost:3000");
 
 const findMatchingQuestion = (input) => {
   const lowerInput = input.toLowerCase().trim();
@@ -23,6 +26,20 @@ const ChatLogic = () => {
     qaData.initial.questions
   );
 
+  useEffect(() => {
+    // Register as a buyer
+    socket.emit("register-buyer");
+
+    // Listen for bot and admin responses
+    socket.on("message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socket.off("message");
+    };
+  }, []);
+
   const handleSendMessage = (message) => {
     if (!message.trim()) return;
 
@@ -34,18 +51,17 @@ const ChatLogic = () => {
     if (questionId && qaData[questionId]) {
       const botReply = { text: qaData[questionId].answer, sender: "bot" };
       setMessages((prev) => [...prev, botReply]);
-
-      // Update current questions with the next related questions
       setCurrentQuestions(qaData[questionId].questions || []);
     } else {
+      // Use Socket.IO for real-time chat when no predefined answer is found
+      socket.emit("message", { text: message, sender: "user", buyerId: socket.id });
+
       setMessages((prev) => [
         ...prev,
-        {
-          text: "I will get back to you on that. Thank you! For emergencies, please call 1247!",
-          sender: "bot",
-        },
+        { text: "Connecting to live chat...", sender: "bot" },
       ]);
-      setCurrentQuestions([]); // Reset follow-up questions if there's no match
+
+      setCurrentQuestions([]);
     }
   };
 
