@@ -86,7 +86,7 @@ task-crud/
 │   │   │   └── users/
 │   │   │       └── login/
 │   │   │           └── route.js
-│   │   ├── dashboard/      # Dashboard page for buyer
+│   │   ├── dashboard/      # Dashboard page for normal user
 │   │   │   └── page.jsx
 │   │   ├── layout.jsx      # Layout component
 │   │   └── page.jsx        # Main page
