@@ -65,66 +65,63 @@ The project has the following directory structure:
 
 ```plaintext
 task-crud/
-├── .gitignore
-├── README.md
-├── eslint.config.mjs
-├── jsconfig.json
-├── next.config.mjs
-├── package-lock.json
-├── package.json
-├── postcss.config.mjs
-├── prisma/
-│   ├── schema.prisma
-│   └── migrations/
-├── src/
-├── actions
-|   ├──sendmail.js
-│   ├── app/
-│   │   ├── api/
-|   |   |  └── user
-│   │   ├── index.js
-│   │   └── ...
-│   ├── components/
-│   │   └── ...
-|   ├── data/
-│   │   └── qaData.json
-|   ├── lib/
-│   │   └── prisma.js
-│   ├── theme/
-│   │   └── theme.js
-|   ├── utils/
-│   │   ├── contactFormSchema.js
-│   |   └── productSchema.js
-│   └── server/
-│       ├── socket.js
-│       └── ...
-├── tailwind.config.mjs
+├── .next/                  # Next.js build output
+├── node_modules/           # Node.js modules
+├── public/                 # Public assets
+├── prisma/                 # Prisma database schema and migration files
+│   ├── migrations/         # Migration files
+│   └── schema.prisma       # Prisma schema file
+├── src/                    # Source code
+│   ├── actions/            # Server-side actions
+│   │   ├── sendmail.js     # Email sending logic
+│   ├── app/                # Next.js app directory
+│   │   ├── (auth)/         # Authentication pages
+│   │   │   └── login/      # Login page
+│   │   │       └── page.jsx
+│   │   ├── add/            # Add task page
+│   │   │   └── page.jsx
+│   │   ├── admindashboard/ # Admin dashboard pages
+│   │   │   └── page.jsx    # Admin chat page
+│   │   ├── api/            # API routes
+│   │   │   └── users/
+│   │   │       └── login/
+│   │   │           └── route.js
+│   │   ├── dashboard/      # Dashboard page for buyer
+│   │   │   └── page.jsx
+│   │   ├── layout.jsx      # Layout component
+│   │   └── page.jsx        # Main page
+│   ├── components/         # Reusable React components
+│   │   ├── Chat/           # Chat components
+│   │   │   └── ChatView.jsx
+│   │   ├── create/         # Create components
+│   │   │   └── CreateProduct.jsx
+│   │   ├── Footer.jsx      # Footer component
+│   │   ├── Navbar.jsx      # Navbar component
+│   ├── data/               # Data files
+│   │   └── qaData.json     # Sample Q&A data
+│   ├── lib/                # Library files
+│   │   └── prisma.js       # Prisma client setup
+│   ├── server/             # Server-side code
+│   │   └── socket.js       # Socket.IO server
+│   ├── theme/              # Theme configuration
+│   │   └── theme.js        # MUI theme configuration
+│   └── utils/              # Utility functions
+│       ├── contactFormSchema.js
+│       └── productSchema.js
+├── .gitignore              # Git ignore file
+├── README.md               # Project README file
+├── eslint.config.mjs       # ESLint configuration file
+├── jsconfig.json           # JavaScript project configuration
+├── next.config.mjs         # Next.js configuration file
+├── package-lock.json       # NPM lock file
+├── package.json            # NPM package configuration
+├── postcss.config.mjs      # PostCSS configuration file
+└── tailwind.config.mjs     # Tailwind CSS configuration file
 ```
-
-- `.gitignore`: Specifies files to be ignored by Git.
-- `README.md`: The README file for the project.
-- `eslint.config.mjs`: ESLint configuration file.
-- `jsconfig.json`: Configuration file for JavaScript projects.
-- `next.config.mjs`: Next.js configuration file.
-- `package-lock.json`: Automatically generated file for locking node modules versions.
-- `package.json`: Lists the project dependencies and scripts.
-- `postcss.config.mjs`: PostCSS configuration file.
-- `prisma/`: Contains Prisma database schema and migration files.
-  - `schema.prisma`: The Prisma schema file.
-  - `migrations/`: Contains migration files.
-- `src/`: Contains the source code of the project.
-  - `app/`: Contains Next.js pages.
-    - `api/`: Contains API routes.
-    - `index.js`: The main page of the application.
-  - `components/`: Contains reusable React components.
-  - `styles/`: Contains styling files.
-  - `server/`: Contains server-side code.
-    - `socket.js`: Contains the Socket.IO server setup and logic.
-- `tailwind.config.mjs`: Tailwind CSS configuration file.
 
 ## Socket.IO
 
-The application uses Socket.IO for real-time updates. Ensure that the server is running to enable real-time communication between the client and server for task updates.
+The application uses Socket.IO for real-time Chat. Ensure that the server is running to enable real-time communication between the client and server.
 
 ### File Structure
 
