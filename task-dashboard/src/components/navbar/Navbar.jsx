@@ -86,7 +86,7 @@ export default function Navbar() {
   return (
     <AppBar
       position="static"
-      sx={{ boxShadow: "none", bgcolor: "primary.main" }}
+      sx={{ boxShadow: "none", bgcolor: "white", borderBottom: "1px solid #e0e0e0",  color: "black" }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* Left: Shop Icon and Title */}

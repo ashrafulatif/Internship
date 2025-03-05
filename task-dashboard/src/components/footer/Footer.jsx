@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <Box
       component="footer"
-      sx={{ bgcolor: "primary.main", color: "text.main", py: 4 }}
+      sx={{ bgcolor: "black", color: "text.main", py: 4 }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={4} justifyContent="center">
