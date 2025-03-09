@@ -231,7 +231,6 @@ export default function DashboardUI(props) {
                     "User3 signed up",
                     "User4 logged in",
                     "User5 placed an order",
-                    "User6 signed up",
                   ]}
                 />
               </Grid>
