@@ -23,8 +23,10 @@ This project is a task dashboard application that includes a map of Bangladesh w
    ```sh
    git clone https://github.com/your-username/task-dashboard.git
 2. Navigate to the project directory:
+    ```sh
     cd task-dashboard
 3. Install the dependencies:
+    ```sh
     npm install
 
 ## Usage
