@@ -11,9 +11,41 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemButton from "@mui/material/ListItemButton";
 import Iconify from "../Iconify/Iconify";
+import TextField from "@mui/material/TextField";
 
-// ----------------------------------------------------------------------
+// Initial permissions JSON data
+const initialPermissions = {
+  mis_add: false,
+  mis_change: false,
+  mis_delete: false,
+  mis_view: false,
+  happy_home_add: false,
+  happy_home_change: false,
+  happy_home_delete: false,
+  happy_home_view: false,
+  qb_add: false,
+  qb_change: false,
+  qb_delete: false,
+  qb_view: false,
+  frm_add: false,
+  frm_change: false,
+  frm_delete: false,
+  frm_view: false,
+  project_on_track_add: false,
+  project_on_track_change: false,
+  project_on_track_delete: false,
+  project_on_track_view: false,
+  study_research_add: false,
+  study_research_change: false,
+  study_research_delete: false,
+  study_research_view: false,
+  learning_add: false,
+  learning_change: false,
+  learning_delete: false,
+  learning_view: false,
+};
 
+// Utility functions
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
 }
@@ -26,22 +58,18 @@ function union(a, b) {
   return [...a, ...not(b, a)];
 }
 
-// ----------------------------------------------------------------------
-
+// TransferList component
 export default function TransferList() {
   const [checked, setChecked] = useState([]);
-
-  const [left, setLeft] = useState([0, 1, 2, 3]);
-
-  const [right, setRight] = useState([4, 5, 6, 7]);
+  const [left, setLeft] = useState(Object.keys(initialPermissions));
+  const [right, setRight] = useState([]);
+  const [filter, setFilter] = useState("");
 
   const leftChecked = intersection(checked, left);
-
   const rightChecked = intersection(checked, right);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
-
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
@@ -67,15 +95,35 @@ export default function TransferList() {
     setRight(right.concat(leftChecked));
     setLeft(not(left, leftChecked));
     setChecked(not(checked, leftChecked));
-    console.log("checked", checked);
-    console.log("leftChecked", leftChecked);
+    updatePermissions(right.concat(leftChecked), true);
   };
 
   const handleCheckedLeft = () => {
     setLeft(left.concat(rightChecked));
     setRight(not(right, rightChecked));
     setChecked(not(checked, rightChecked));
+    updatePermissions(rightChecked, false);
   };
+
+  //update the prermissions
+  const updatePermissions = (items, value) => {
+    items.forEach((item) => {
+      initialPermissions[item] = value;
+    });
+    console.log(
+      "Updated Permissions:",
+      Object.keys(initialPermissions).filter((key) => initialPermissions[key])
+    );
+  };
+
+  //set filter value
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+  //filter check
+  const filteredLeft = left.filter((item) =>
+    item.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const customList = (title, items) => (
     <Card sx={{ borderRadius: 1.5 }}>
@@ -98,14 +146,12 @@ export default function TransferList() {
         subheader={`${numberOfChecked(items)}/${items.length} selected`}
         sx={{ p: 2 }}
       />
-
       <Divider />
-
       <List
         dense
         component="div"
         role="list"
-        sx={{ width: 200, overflow: "auto" }}
+        sx={{ width: 300, height: 350, overflow: "auto" }}
       >
         {items.map((value) => (
           <ListItemButton
@@ -125,7 +171,7 @@ export default function TransferList() {
             </ListItemIcon>
             <ListItemText
               id={`transfer-list-all-item-${value}-label`}
-              primary={`List item ${value + 1}`}
+              primary={formatPermission(value)}
             />
           </ListItemButton>
         ))}
@@ -133,15 +179,24 @@ export default function TransferList() {
     </Card>
   );
 
-  return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      sx={{ width: "auto", p: 3 }}
-    >
-      <Grid>{customList("Choices", left)}</Grid>
+  const formatPermission = (permission) => {
+    const [category, action] = permission.split("_");
+    const formattedCategory = category.replace(/_/g, " ");
+    return `Register | ${formattedCategory} | Can ${action} ${formattedCategory}`;
+  };
 
+  return (
+    <Grid container justifyContent="center" alignItems="center" sx={{ p: 3 }}>
+      <Grid item>
+        <TextField
+          label="Filter"
+          variant="outlined"
+          value={filter}
+          onChange={handleFilterChange}
+          sx={{ mb: 2 }}
+        />
+        {customList("Available Permissions", filteredLeft)}
+      </Grid>
       <Grid container direction="column" alignItems="center" sx={{ p: 3 }}>
         <Button
           color="inherit"
@@ -154,7 +209,6 @@ export default function TransferList() {
         >
           <Iconify icon="eva:arrow-ios-forward-fill" width={18} />
         </Button>
-
         <Button
           color="inherit"
           variant="outlined"
@@ -167,8 +221,7 @@ export default function TransferList() {
           <Iconify icon="eva:arrow-ios-back-fill" width={18} />
         </Button>
       </Grid>
-
-      <Grid>{customList("Chosen", right)}</Grid>
+      <Grid item>{customList("Chosen Permissions", right)}</Grid>
     </Grid>
   );
 }
