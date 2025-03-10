@@ -1,5 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import TransferList from "../components/TransferList/TransferList";
 
 export default function Home() {
-  return <Box></Box>;
+  return (
+    <Box>
+      <TransferList />
+    </Box>
+  );
 }
